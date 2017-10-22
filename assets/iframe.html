@@ -1,5 +1,11 @@
 <html>
 <head>
+  <style>
+    .block {
+      background-color: gray;
+      color: white;
+    }
+</style>
   <meta charset="utf-8">
   <!-- http://garden.zendesk.com -->
   <link rel="stylesheet" href="https://assets.zendesk.com/apps/sdk-assets/css/1/zendesk_garden.css" type="text/css">
@@ -8,8 +14,38 @@
   <h2 class="u-gamma">Hello, World! Derp!</h2>
   <b>master updated</b>
   test text
+  <button type="button" onclick="init()">Click Me!</button>
+  <br>
+  <br>
+  <div id="butter">Loading...</div>
   <!-- https://github.com/zendesk/zendesk_app_framework_sdk -->
   <script type="text/javascript" src="https://assets.zendesk.com/apps/sdk/2.0/zaf_sdk.js"></script>
+  <script>
+    var client = ZAFClient.init(); //Initialize Zat client
+    
+    function renderText(text) {
+      var replaceLoading = document.getElementById("butter");
+      replaceLoading.innerHTML = text;
+    }
+    function getRequester() {
+      return client.get('ticket.requester.name').then(function(data) {
+        return data['ticket.requester.name'];
+      });
+    }
+    function init() {
+      getRequester().then(function(requesterName) {
+        renderText('<div class="block"><b>Ticket Requester Name: </div>' + '<b>' + requesterName + '</b>');
+        });
+      }
+    /*
+    var data;
+function ben() {                                      //create a funciton
+    document.getElementById("butter").innerHTML = client.get('ticket.requester.name').then(function(result){
+          return result;
+        });
+    }
+    */
+  </script>
   <script>
     // Initialise the Zendesk JavaScript API client
     // https://developer.zendesk.com/apps/docs/apps-v2
